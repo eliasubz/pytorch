@@ -315,6 +315,13 @@ struct hypot_functor {
   }
 };
 
+struct heaviside_functor {
+  template <typename T>
+  inline T operator()(const T a, const T b) {
+    return a == static_cast<T>(0) ? b : static_cast<T>(a > 0);
+  }
+};
+
 struct atan2_functor {
   template <typename T, enable_if_t<is_floating_point_v<T>, bool> = true>
   inline T operator()(const T a, const T b) {
@@ -632,6 +639,8 @@ struct logical_xor_functor {
   REGISTER_BINARY_OP(NAME, float8_e4m3fn, bool); \
   REGISTER_BINARY_CASTOUT_OP(NAME, float8_e4m3fn, bool)
 
+REGISTER_FLOAT_BINARY_OP(heaviside);
+REGISTER_INTEGER_BINARY_OP(heaviside);
 REGISTER_FLOAT_BINARY_OP(hypot);
 REGISTER_FLOAT_BINARY_OP(atan2);
 REGISTER_INT2FLOAT_BINARY_OP(atan2);
